@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30717.126
+MinimumVisualStudioVersion = 15.0.26124.0
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SASS_Backend", "SASS_Backend\SASS_Backend.csproj", "{EA46E627-4815-430C-9FEA-FB67FFC48516}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EA46E627-4815-430C-9FEA-FB67FFC48516}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA46E627-4815-430C-9FEA-FB67FFC48516}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA46E627-4815-430C-9FEA-FB67FFC48516}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EA46E627-4815-430C-9FEA-FB67FFC48516}.Debug|x64.Build.0 = Debug|Any CPU
+		{EA46E627-4815-430C-9FEA-FB67FFC48516}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EA46E627-4815-430C-9FEA-FB67FFC48516}.Debug|x86.Build.0 = Debug|Any CPU
+		{EA46E627-4815-430C-9FEA-FB67FFC48516}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA46E627-4815-430C-9FEA-FB67FFC48516}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA46E627-4815-430C-9FEA-FB67FFC48516}.Release|x64.ActiveCfg = Release|Any CPU
+		{EA46E627-4815-430C-9FEA-FB67FFC48516}.Release|x64.Build.0 = Release|Any CPU
+		{EA46E627-4815-430C-9FEA-FB67FFC48516}.Release|x86.ActiveCfg = Release|Any CPU
+		{EA46E627-4815-430C-9FEA-FB67FFC48516}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7EA8CCA9-E8F3-4FFD-852A-2BA88BF03C44}
+	EndGlobalSection
+EndGlobal
