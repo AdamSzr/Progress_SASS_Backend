@@ -7,8 +7,25 @@ namespace SassBackProj.Models.WebSocket
 {
     public class MessageModel
     {
-        public string from { get; set; }
-        public string to { get; set; }
-        public string message { get; set; }
+        public string action { get; set; } // TODO: WSAction.
+        public string data { get; set; }
+        public string JsonSerialize() => System.Text.Json.JsonSerializer.Serialize(this, typeof(MessageModel));
+        public byte[] JsonBinary() => System.Text.ASCIIEncoding.ASCII.GetBytes(this.JsonSerialize());
+        public static MessageModel GetWelcomeMessage(string id)
+        {
+            SassBackProj.Models.WebSocket.MessageModel idPacket = new Models.WebSocket.MessageModel();
+
+            idPacket.action = "welcome";
+            idPacket.data = string.Format("{id:\"{0}\"}", id);
+            return idPacket;
+            }
     }
+}
+
+
+
+public enum WSAction
+{
+    message, // socket, messagemodel 
+    disconnected, // przekazuje socket.
 }

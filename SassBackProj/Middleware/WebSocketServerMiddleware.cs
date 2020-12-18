@@ -17,7 +17,7 @@ namespace SassBackProj.Middleware
         private readonly RequestDelegate _next;
 
         private WebSocketServerConnectionManager _manager;
-
+        // manager shoudl send new message on new user.
         public WebSocketServerMiddleware(RequestDelegate next, WebSocketServerConnectionManager manager)
         {
             _next = next;
@@ -28,10 +28,49 @@ namespace SassBackProj.Middleware
         {
             if (context.WebSockets.IsWebSocketRequest)
             {
+                
                 WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
-
                 string conn = _manager.AddSocket(webSocket);
+                Console.WriteLine("NEW Connection -> " + conn);
+                SuperSocket super = new SuperSocket();
+                #region SuperSocket Config
+                super.OnInitialization += async (socket,id)=>{
+                    Console.WriteLine("NEW Connection -> "+id);
+                    var data = Models.WebSocket.MessageModel.GetWelcomeMessage(id);
+                    await socket.SendAsync(data.JsonBinary(), WebSocketMessageType.Text, true, CancellationToken.None);
+                };
 
+                super.OnDisconnectMessage += async (socket, guid, result) =>
+                {
+                    Console.WriteLine($"Close on: " + guid);
+                    WebSocket sock;
+
+                    if (_manager.GetAllSockets().TryRemove(guid, out sock))
+                        Console.WriteLine($"Removed -> From list {guid}");
+
+                    Console.WriteLine("Still Managed Connections: " + _manager.GetAllSockets().Count.ToString());
+
+                    await sock.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
+                };
+
+                super.OnTextMessage += async (socket, messageModel) =>
+                {
+                    Console.WriteLine("NEW Message -> " + messageModel.JsonSerialize());
+                    var messageText = JsonSerializer.Deserialize<Models.WebSocket.TextMessageModel>(messageModel.data);
+                    var reciver = _manager.GetAllSockets().FirstOrDefault((s) => { return s.Key == messageText.to; }).Value;
+                    await reciver.SendAsync(messageModel.JsonBinary(), WebSocketMessageType.Text, true, CancellationToken.None); 
+                      // TODO: Obsluga default.
+                };
+                #endregion 
+
+                super.Init(webSocket, conn);
+                Console.WriteLine("Socket Initialized");
+                await super.Run();
+                Console.WriteLine("Socket Running");
+
+                #region Old
+
+                /*
                 //Send ConnID Back
                 await SendInfo(webSocket, conn);
 
@@ -74,6 +113,9 @@ namespace SassBackProj.Middleware
                         throw new Exception("Invalid WebSocketMessageType");
                     }
                 });
+                */
+                #endregion
+
             }
             else
             {
@@ -90,7 +132,7 @@ namespace SassBackProj.Middleware
             // to: guid // availeble "all"
             // message:"text"
             //}
-            Models.WebSocket.MessageModel mess = JsonSerializer.Deserialize<Models.WebSocket.MessageModel>(message);
+            Models.WebSocket.TextMessageModel mess = JsonSerializer.Deserialize<Models.WebSocket.TextMessageModel>(message);
 
             WebSocket reciver;
             switch (mess.to)
